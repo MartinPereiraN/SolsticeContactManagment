@@ -37,5 +37,15 @@ namespace Solstice.CodingChallenge.API.Controllers
 
             return Ok(new FileResponseDto() { FileName = fileName });
         }
+
+        [HttpGet("{fileName}")]
+        public async Task<IActionResult> GetFile([FromRoute] string fileName)
+        {
+            var path = Path.Combine(
+                        Directory.GetCurrentDirectory(), "FileUploads",
+                       fileName);
+            var image = System.IO.File.OpenRead(path);
+            return File(image, "application/octet-stream");
+        }
     }
 }
