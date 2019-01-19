@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Solstice.CodingChallenge.API.Dtos.Requests;
 using Solstice.CodingChallenge.API.Dtos.Responses;
+using Solstice.CodingChallenge.API.Models;
 using Solstice.CodingChallenge.Domain.Models;
 using Solstice.CodingChallenge.Provider;
 using Solstice.CodingChallenge.Provider.Utilities;
@@ -22,6 +23,7 @@ namespace Solstice.CodingChallenge.API.Controllers
         }
         // GET api/values
         [HttpGet]
+        [ProducesResponseType(typeof(PagedObject<ContactListResponseDto>), 200)]
         public IActionResult Get(string email = null, string phoneNumber = null, int? pageNumber = 0, int? pageSize = null, string orderBy = null, string orderDirection = "ASC")
         {
             var contacts = _databaseProvider.GetFilteredContacts(email, phoneNumber, new string[] { "Address.City", "Address.State" });
@@ -32,6 +34,7 @@ namespace Solstice.CodingChallenge.API.Controllers
         }
 
         [HttpGet("byState/{stateId}")]
+        [ProducesResponseType(typeof(List<ContactListResponseDto>), 200)]
         public IActionResult GetByState([FromRoute]int stateId, int? cityId = 0)
         {
             var contacts = _databaseProvider.GetFromLocation(stateId, cityId, new string[] { "Address.City", "Address.State" });
@@ -40,6 +43,7 @@ namespace Solstice.CodingChallenge.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(ContactSingleResponseDto), 200)]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             if (!ModelState.IsValid)
@@ -60,6 +64,7 @@ namespace Solstice.CodingChallenge.API.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(typeof(ContactSingleResponseDto), 201)]
         public async Task<IActionResult> CreateContact([FromBody] ContactCreateRequestDto contactRequest)
         {
             var fileValid = string.IsNullOrEmpty(contactRequest.ProfileImageFileName) || ValidFile(contactRequest.ProfileImageFileName); // It's not required so I only mark it invalid when there is a wrong value 
@@ -80,6 +85,7 @@ namespace Solstice.CodingChallenge.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [ProducesResponseType(typeof(ContactSingleResponseDto), 200)]
         public async Task<IActionResult> EditContact([FromRoute] int id, [FromBody] ContactEditRequestDto contactRequest)
         {
             var fileValid = string.IsNullOrEmpty(contactRequest.ProfileImageFileName) || ValidFile(contactRequest.ProfileImageFileName);
@@ -110,6 +116,7 @@ namespace Solstice.CodingChallenge.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(ContactSingleResponseDto), 200)]
         public async Task<IActionResult> DeleteContact([FromRoute]int id)
         {
             if (!ModelState.IsValid)

@@ -16,7 +16,6 @@ namespace Solstice.CodingChallenge.API.Dtos.Requests
         public string ProfileImageFileName { get; set; }
         [Required]
         public string Email { get; set; }
-        [Required]
         public DateTime BirthDate { get; set; }
         public AddressCreateDto Address { get; set; }
     }

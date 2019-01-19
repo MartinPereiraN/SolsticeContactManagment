@@ -17,7 +17,6 @@ namespace Solstice.CodingChallenge.API.Dtos.Responses
         public string ProfileImageFileName { get; set; }
         [Required]
         public string Email { get; set; }
-        [Required]
         public DateTime BirthDate { get; set; }
         public string WorkPhoneNumber { get; set; }
         public string PersonalPhoneNumber { get; set; }

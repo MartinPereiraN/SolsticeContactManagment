@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Solstice.CodingChallenge.API.Dtos.Responses;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,6 +16,7 @@ namespace Solstice.CodingChallenge.API.Controllers
     public class FilesController : Controller
     {
         [HttpPost]
+        [ProducesResponseType(typeof(FileResponseDto), 200)]
         public async Task<IActionResult> UploadFile([FromForm]IFormFile file)
         {
             if (file == null || file.Length == 0)
@@ -32,7 +35,7 @@ namespace Solstice.CodingChallenge.API.Controllers
                 await file.CopyToAsync(stream);
             }
 
-            return Ok(new { fileName = fileName });
+            return Ok(new FileResponseDto() { FileName = fileName });
         }
     }
 }

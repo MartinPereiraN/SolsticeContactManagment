@@ -20,6 +20,7 @@ namespace Solstice.CodingChallenge.API.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(List<CityResponseDto>), 200)]
         public IActionResult Get()
         {
             return Ok(_mapper.Map<List<CityResponseDto>>(_databaseProvider.GetCities()));
